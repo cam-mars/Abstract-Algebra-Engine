@@ -1,4 +1,4 @@
-# math_algebra_engine
+# Abstract Algebra Computational Engine
 
 A strongly typed computational group theory engine written in Rust. This engine provides generic algebraic traits, concrete structures for common groups, and automated graph-search algorithms for generating group spaces and testing algebraic properties.
 
