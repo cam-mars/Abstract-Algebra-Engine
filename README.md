@@ -11,6 +11,7 @@ A strongly typed computational group theory engine written in Rust. This engine 
   * `is_normal`: Automated verification of conjugate closure ($g n g^{-1} \in N, \forall g \in G, n \in N$).
 * **Implemented Structures**:
   * `Symmetric<const N: usize>`: Permutation groups ($S_n$, $A_n$) using const generics.
+  * `ZnAdd<const N: usize>`: Additive groups of integers modulo $p$.
   * `ZpMult<const P: usize>`: Multiplicative groups of integers modulo $p$.
   * `GL<const N: usize>`: General Linear Groups over complex numbers $GL_n(\mathbb{C})$.
 
