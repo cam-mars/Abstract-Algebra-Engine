@@ -2,3 +2,4 @@ pub mod groups;
 pub mod rings;
 pub mod fields;
 pub mod helpers;
+pub mod quotients;

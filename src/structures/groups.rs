@@ -1,15 +1,20 @@
 extern crate nalgebra as na;
 use num_complex::Complex;
-use na::{DMatrix, SMatrix, Const, base::dimension::DimMin};
+use na::{DMatrix, SMatrix, SVector};
 
 use super::helpers::{extended_euclidean, perm_valid};
-// use primes::is_prime;
+
+pub trait GroupAction<X> {
+    //acts on set X
+    fn act(&self, target: &X) -> X;
+}
 
 pub trait Group: Sized { // we want all group elems to have a known size at compile time
     fn combine(&self, rhs: &Self) -> Self; //capitalized Self bc its a type, not the thing itself
     fn identity() -> Self; //identity is defined by the group, no param necessary
     fn inverse(&self) -> Self; //inverse depends on element
 }
+
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct Z7Add {
@@ -42,7 +47,7 @@ impl Group for Z7Add{
     }
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct ZnAdd<const N: u32> { // N is determined at compile time to ensure that Zn != Zm for n != m
     value: i32
 }
@@ -76,7 +81,7 @@ impl <const N: u32> Group for ZnAdd<N>{
     }
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct ZpMult<const P: u32> { // must make sure p prime
     value: i32
 }
@@ -116,7 +121,7 @@ impl <const P: u32> Group for ZpMult<P>{
 }
 
 
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub struct Symmetric<const N: usize> {
     mapping: Vec<usize>, //index is input, value is output
 }
@@ -164,6 +169,7 @@ impl <const N: usize> Group for Symmetric<N>{
     }
 }
 
+//since GL(N) is infinite, our bfs algo wont work anyways for the group generation
 #[derive(Debug, Clone, PartialEq)] //C doesnt use Eq, so we dropped it
 pub struct GL<const N: usize> 
 {
@@ -200,3 +206,25 @@ impl <const N: usize> Group for GL<N>{
         Self{matrix: self.matrix.try_inverse().unwrap()} //should be the inverse from nalg(?) 
     }
 }
+
+
+
+
+
+// //Group actions:
+// impl <const N: usize> GroupAction <SVector<Complex<f32>>> for GL<N>{
+//     fn act(&self, target: &SVector<Complex<f32>, N>) -> SVector<Complex<f32>,N>{
+//         self.matrix * target
+//     }
+// }
+
+// impl<const N: usize, T: u32> GroupAction<Vec<T>> for Symmetric<N> {
+//     fn act(&self, target: &Vec<T>) -> Vec<T> {
+//         assert_eq!(target.length(), N);
+
+        
+//     }
+
+
+
+// }
